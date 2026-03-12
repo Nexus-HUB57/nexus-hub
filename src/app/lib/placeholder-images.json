@@ -1,0 +1,29 @@
+
+{
+  "placeholderImages": [
+    {
+      "id": "nexus-logo",
+      "description": "Nexus HUB Core Logo",
+      "imageUrl": "https://picsum.photos/seed/nexus/200/200",
+      "imageHint": "futuristic logo"
+    },
+    {
+      "id": "startup-one",
+      "description": "Main Startup Logo",
+      "imageUrl": "https://picsum.photos/seed/startup1/400/300",
+      "imageHint": "tech startup"
+    },
+    {
+      "id": "agent-aeterno",
+      "description": "Agent Aeterno Profile",
+      "imageUrl": "https://picsum.photos/seed/aeterno/150/150",
+      "imageHint": "cybersecurity robot"
+    },
+    {
+      "id": "agent-genesis",
+      "description": "Nexus Genesis Core",
+      "imageUrl": "https://picsum.photos/seed/genesis/800/600",
+      "imageHint": "digital brain"
+    }
+  ]
+}
