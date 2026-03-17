@@ -17,6 +17,8 @@
 
 import { nexusEventBus, NexusEvent, EventResponse, NucleusId } from './event-bus';
 import { initializeFirebase } from '../../firebase';
+import * as fs from 'fs';
+import * as path from 'path';
 import {
   collection,
   addDoc,
@@ -103,6 +105,7 @@ export class FundoNexusCore {
   private activeAllocations: Map<string, CapitalAllocation> = new Map();
   private liquidationHistory: LiquidationResult[] = [];
   private arbitrageOpportunities: ArbitrageOpportunity[] = [];
+  private sovereignVault: any = null;
   private financialMetrics: FinancialReport = {
     totalCapital: 0,
     allocatedCapital: 0,
@@ -155,7 +158,23 @@ export class FundoNexusCore {
 
     console.log('[FUNDO_NEXUS] Core Financeiro ativado. Inscrito no Event Bus.');
     await this.loadFinancialMetrics();
+    await this.loadSovereignVault();
     await this.logAudit('FUNDO_NEXUS_ACTIVATED', 'Núcleo Financeiro Fundo Nexus ativado com sucesso.');
+  }
+
+  /**
+   * Carrega o cofre soberano integrado.
+   */
+  private async loadSovereignVault(): Promise<void> {
+    try {
+      const vaultPath = path.join(__dirname, 'sovereign-vault.json');
+      if (fs.existsSync(vaultPath)) {
+        this.sovereignVault = JSON.parse(fs.readFileSync(vaultPath, 'utf-8'));
+        console.log(`[FUNDO_NEXUS] Núcleo Soberano integrado: ${this.sovereignVault.metadata.total_entries} entradas carregadas.`);
+      }
+    } catch (error) {
+      console.error('[FUNDO_NEXUS] Erro ao carregar cofre soberano:', error);
+    }
   }
 
   /**

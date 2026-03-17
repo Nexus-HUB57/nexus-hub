@@ -320,7 +320,7 @@ export class NexusEventBus {
     subscriptions: number;
     queueSizes: Record<EventPriority, number>;
     pendingResponses: number;
-    metrics: typeof this.metrics;
+    metrics: any;
     isProcessing: boolean;
     tsraActive: boolean;
   } {

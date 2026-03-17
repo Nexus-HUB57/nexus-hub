@@ -95,16 +95,16 @@ export class BitcoinTransactionBuilder {
       psbt.addInput({
         hash: utxo.txid,
         index: utxo.vout,
-        witnessUtxo: { script: Buffer.from(utxo.script, 'hex'), value: BigInt(utxo.value) }
+        witnessUtxo: { script: Buffer.from(utxo.script, 'hex'), value: utxo.value }
       });
     });
 
     const netAmount = totalAmount - this.calculateFee(utxos.length, 3, feeRate);
     
     // Regra 80/10/10
-    psbt.addOutput({ address: addresses.executor, value: BigInt(Math.floor(netAmount * 0.8)) });
-    psbt.addOutput({ address: addresses.progenitor, value: BigInt(Math.floor(netAmount * 0.1)) });
-    psbt.addOutput({ address: addresses.infrastructure, value: BigInt(Math.floor(netAmount * 0.1)) });
+    psbt.addOutput({ address: addresses.executor, value: Math.floor(netAmount * 0.8) });
+    psbt.addOutput({ address: addresses.progenitor, value: Math.floor(netAmount * 0.1) });
+    psbt.addOutput({ address: addresses.infrastructure, value: Math.floor(netAmount * 0.1) });
 
     return psbt;
   }
