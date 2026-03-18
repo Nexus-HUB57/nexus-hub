@@ -76,7 +76,8 @@ export class BitcoinTransactionBuilder {
   private network: bitcoin.Network;
 
   constructor(network: "mainnet" | "testnet" = "mainnet") {
-    this.network = network === "mainnet" ? bitcoin.networks.bitcoin : bitcoin.networks.testnet;
+    // PRODUCTION: Apenas MAINNET é permitido em ambiente de produção
+    this.network = bitcoin.networks.bitcoin; // Forçar mainnet
   }
 
   /**

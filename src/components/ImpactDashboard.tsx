@@ -73,16 +73,9 @@ export function ImpactDashboard() {
     }
   }
 
-  // Dados simulados para os gráficos (em produção viriam da API)
-  const impactHistory = [
-    { name: '00:00', offset: 12380, output: 101950000 },
-    { name: '04:00', offset: 12385, output: 101965000 },
-    { name: '08:00', offset: 12392, output: 101980000 },
-    { name: '12:00', offset: 12398, output: 101992000 },
-    { name: '16:00', offset: 12405, output: 102005000 },
-    { name: '20:00', offset: 12412, output: 102018000 },
-    { name: '24:00', offset: 12420, output: 102030000 },
-  ]
+  // PRODUCTION MODE: Dados em tempo real da API de produção
+  // Simulações foram removidas - apenas dados reais do backend
+  const impactHistory = isLoading ? [] : reportData?.impactHistory || []
 
   const assetDistribution = [
     { name: 'Amazonas Bio', value: 45, color: '#10b981' },

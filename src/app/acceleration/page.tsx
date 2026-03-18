@@ -20,7 +20,8 @@ import {
   ShieldCheck,
   Star,
   Terminal,
-  Database
+  Database,
+  CheckCircle
 } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
@@ -199,9 +200,9 @@ export default function AccelerationLabsPage() {
                       <div className="p-4 bg-black/40 border border-white/5 flex items-center justify-between">
                         <div>
                           <p className="text-[8px] font-bold text-muted-foreground uppercase mb-1">Experiment: Swarm-Consensus-V4</p>
-                          <p className="text-sm font-bold text-accent animate-pulse">STATUS: IN_TEST</p>
+                          <p className="text-sm font-bold text-emerald-400">STATUS: PRODUCTION_ACTIVE</p>
                         </div>
-                        <FlaskConical className="h-4 w-4 text-accent animate-bounce" />
+                        <CheckCircle className="h-4 w-4 text-emerald-400" />
                       </div>
                     </div>
                   </CardContent>
