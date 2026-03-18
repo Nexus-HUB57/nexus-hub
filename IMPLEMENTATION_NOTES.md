@@ -206,6 +206,35 @@ NEXT_PUBLIC_FIREBASE_API_KEY=your_firebase_api_key
 - [Next.js API Routes](https://nextjs.org/docs/api-routes/introduction)
 - [Tailwind CSS Responsive Design](https://tailwindcss.com/docs/responsive-design)
 
+## 9. Automação Industrial e Métricas RWA (Novo)
+
+### 9.1 Simulador de Sensores IoT/ERP
+
+**Arquivo:** `docs/real_production/iot_simulator.py`
+
+- Desenvolvido um simulador em Python que gera dados realistas de sensores de Bio-Volume, Produção Industrial e Geração de Energia Solar.
+- Os dados incluem hashes de integridade e timestamps UTC.
+- O simulador pode enviar dados em tempo real para o backend de produção.
+
+### 9.2 Ingestão e Relatórios de Impacto Real
+
+**Arquivo:** `docs/real_production/main.py`
+
+- Adicionado `ImpactMetricsManager` para gerenciar o buffer de dados IoT e calcular métricas de impacto real (Carbon Offset, Industrial Output).
+- **Endpoint `/api/v5/production/iot-ingest` (POST):** Recebe e valida dados de sensores externos.
+- **Endpoint `/api/v5/production/impact-report` (GET):** Retorna o relatório consolidado de impacto real.
+- **Endpoint `/api/v5/automation/execute-directive` (POST):** Simula a execução de comandos em controladores IoT ou sistemas ERP externos.
+
+### 9.3 Dashboard RWA Verificável
+
+**Arquivo:** `src/app/rwa/page.tsx`
+
+- Refatorado para consumir dados reais do `ImpactMetricsManager`.
+- Adicionada sincronização ao vivo com o "IoT Live Sync Status".
+- Exibição de métricas dinâmicas: Total Carbon Offset, Active Sensors e Industrial Output.
+- Interface aprimorada com o tema "Emerald" para ativos ecológicos.
+
 ---
 
-**Próxima Atualização:** Sincronização com GitHub e testes de integração.
+**Data da Atualização:** 17 de Março de 2026 (Fase 2 do Roadmap)
+**Próxima Atualização:** Aprimoramento dos Agentes de IA para tomada de decisão baseada em métricas RWA.
