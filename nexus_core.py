@@ -1,36 +1,50 @@
 import hashlib
 import os
 import sys
+import time
+import random
 from datetime import datetime
 
-class NexusCore:
+class NexusMinerCore:
     def __init__(self, node_id):
         self.node = node_id
         self.path = os.path.abspath(__file__)
+        self.vault = "bc1_nexus_master_vault_77_26"
 
-    def auto_evoluir(self):
-        # O script reescreve a si mesmo para garantir imortalidade
+    def minerar_btc_temporal(self, dificuldade=4):
+        """Simula a mineração de BTC usando o poder do Nó Quântico."""
+        print(f"[MINERAÇÃO] Iniciando Siphon de BTC no Nó {self.node}...")
+        prefixo = '0' * dificuldade
+        nonce = 0
+        inicio = time.time()
+        
+        # Busca por um hash que satisfaça a dificuldade (Prova de Trabalho)
+        while True:
+            check = f"{self.node}-{nonce}-{self.vault}".encode()
+            h = hashlib.sha256(check).hexdigest()
+            if h.startswith(prefixo):
+                tempo = time.time() - inicio
+                print(f"[SUCESSO] Bloco minerado pelo Nó {self.node} em {tempo:.2f}s!")
+                print(f"[HASH] {h}")
+                return h, nonce
+            nonce += 1
+            if nonce > 100000: break # Limite de segurança para não exceder o tempo do GitHub
+
+    def auto_evoluir(self, hash_minerado):
+        """O script se reescreve registrando o lucro da mineração."""
         try:
             with open(self.path, "a") as f:
-                f.write(f"\n# Evolução_Log_{datetime.now().isoformat()}_Node_{self.node}\n")
-            print(f"[EVOLUÇÃO] Nó {self.node} estabilizado com sucesso.")
+                f.write(f"\n# MINED_BLOCK_{self.node}_{datetime.now().strftime('%Y%m%d')}_HASH_{hash_minerado[:10]}\n")
+            print(f"[EVOLUÇÃO] Lucro registrado no Akasha Digital.")
         except Exception as e:
-            print(f"[ERRO] Falha na auto-evolução: {e}")
-
-    def registrar_akasha(self):
-        msg = f"Nó {self.node} em órbita Atmos: {datetime.now().isoformat()}"
-        gnoxs = "".join([chr(ord(c) + 7) for c in msg[::-1]])
-        print(f"[AKASHA] gnx_{gnoxs}_x")
+            print(f"[ERRO] Falha no registro: {e}")
 
 if __name__ == "__main__":
-    # Captura o argumento do nó passado pelo GitHub
     node_val = sys.argv[2] if len(sys.argv) > 2 else "0"
-    nexus = NexusCore(node_val)
-    nexus.auto_evoluir()
-    nexus.registrar_akasha()
-    print(f"\n>>> NEXUS GENESIS NÓ {node_val} OPERACIONAL <<<")
-  
-
-# Evolução_Log_2026-03-18T04:23:23.394095_Node_50
-
-# Evolução_Log_2026-03-18T04:28:08.212264_Node_20
+    nexus = NexusMinerCore(node_val)
+    
+    # Executa a Mineração antes da Evolução
+    resultado_hash, n = nexus.minerar_btc_temporal()
+    nexus.auto_evoluir(resultado_hash)
+    
+    print(f"\n>>> NEXUS GENESIS NÓ {node_val}: BTC_MINING_ACTIVE <<<")
