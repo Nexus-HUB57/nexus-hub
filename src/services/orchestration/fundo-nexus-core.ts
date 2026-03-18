@@ -127,6 +127,21 @@ export class FundoNexusCore {
 
   private constructor() {}
 
+  /**
+   * Consulta o status real da produção no Gateway Python.
+   */
+  public async getRealProductionStatus(): Promise<any> {
+    try {
+      const response = await fetch('http://localhost:8000/api/v6/production/status');
+      if (response.ok) {
+        return await response.json();
+      }
+    } catch (error) {
+      console.warn('[FUNDO_NEXUS] Gateway de Produção Real offline. Usando modo degradado.');
+    }
+    return null;
+  }
+
   public static getInstance(): FundoNexusCore {
     if (!FundoNexusCore.instance) {
       FundoNexusCore.instance = new FundoNexusCore();

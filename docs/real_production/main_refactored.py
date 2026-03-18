@@ -149,24 +149,26 @@ class NexusRPC:
             raise HTTPException(status_code=500, detail=str(e))
     
     def get_balance(self, address: str) -> BalanceResponse:
-        """Obtém saldo real de um endereço na Mainnet"""
+        """Obtém saldo real de um endereço na Mainnet com fallback para API pública"""
         try:
-            # Chamada real ao RPC para obter saldo
+            # Tentar chamada real ao RPC
             result = self.chamar_metodo("getaddressbalance", [address])
-            
-            confirmed = result.get("confirmed", 0) / 1e8  # Converte satoshis para BTC
+            confirmed = result.get("confirmed", 0) / 1e8
             unconfirmed = result.get("unconfirmed", 0) / 1e8
-            
-            return BalanceResponse(
-                address=address,
-                confirmed=confirmed,
-                unconfirmed=unconfirmed,
-                total=confirmed + unconfirmed,
-                source="electrum_rpc"
-            )
-        except Exception as e:
-            logger.error(f"❌ Erro ao obter saldo: {str(e)}")
-            raise
+            return BalanceResponse(address=address, confirmed=confirmed, unconfirmed=unconfirmed, total=confirmed + unconfirmed, source="electrum_rpc")
+        except Exception as rpc_err:
+            logger.warning(f"⚠️ RPC falhou, tentando fallback para API pública: {str(rpc_err)}")
+            try:
+                # Fallback para Blockchain.info
+                response = requests.get(f"https://blockchain.info/rawaddr/{address}", timeout=10)
+                if response.status_code == 200:
+                    data = response.json()
+                    confirmed = data.get('final_balance', 0) / 1e8
+                    return BalanceResponse(address=address, confirmed=confirmed, unconfirmed=0.0, total=confirmed, source="blockchain_info_fallback")
+                raise Exception(f"Public API returned status {response.status_code}")
+            except Exception as fallback_err:
+                logger.error(f"❌ Fallback também falhou: {str(fallback_err)}")
+                raise HTTPException(status_code=502, detail="Falha ao obter saldo de todas as fontes (RPC e Fallback)")
     
     def send_transaction(self, tx_hex: str) -> str:
         """Envia uma transação bruta para a Mainnet"""

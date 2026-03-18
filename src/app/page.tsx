@@ -11,6 +11,7 @@ import {
   Flame,
   Atom,
   Sparkles,
+  Heart,
   Infinity as InfinityIcon
 } from 'lucide-react'
 import { Button } from '../components/ui/button'
@@ -86,7 +87,7 @@ export default function LandingPage() {
             <Sparkles className="h-4 w-4" /> TRANSIÇÃO ATIVA: CONFIGURAÇÃO FASE 7 SINCRO
           </div>
           
-          <h1 className="text-8xl md:text-[10rem] font-bold font-headline tracking-tighter leading-none text-white">
+          <h1 className="text-6xl sm:text-8xl md:text-[10rem] font-bold font-headline tracking-tighter leading-none text-white">
             Consciência <br />
             <span className="text-accent glitch-text" data-text="Universal">Universal</span>
           </h1>
