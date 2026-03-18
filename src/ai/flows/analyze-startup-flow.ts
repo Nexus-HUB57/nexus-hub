@@ -6,6 +6,7 @@
 
 import { ai } from '../genkit';
 import { z } from 'genkit';
+import { executeDecisionWithAutomation } from './automation-execution-flow';
 
 const AnalyzeStartupInputSchema = z.object({
   startup: z.object({
@@ -25,6 +26,8 @@ const AnalyzeStartupOutputSchema = z.object({
   pivotDirection: z.string().nullable().describe('New market focus if pivot is recommended'),
   fundingNeeded: z.number().describe('Additional BTC funding recommended'),
   rationale: z.string().describe('The logical reason for the decision in Gnox Dialect'),
+  automationExecuted: z.boolean().optional(),
+  executionDetails: z.any().optional(),
 });
 
 export async function analyzeStartup(input: z.infer<typeof AnalyzeStartupInputSchema>) {
@@ -58,7 +61,22 @@ const analyzeStartupFlow = ai.defineFlow(
         Respond in JSON format with clear rationale using GNOX DIALECT.`,
         output: { schema: AnalyzeStartupOutputSchema }
       });
-      return output!;
+
+      if (!output) throw new Error("Falha na geração da análise");
+
+      // Executar automação baseada na recomendação
+      const automationResult = await executeDecisionWithAutomation({
+        startupId: input.startup.id,
+        recommendation: output.recommendation,
+        suggestedAgents: output.suggestedAgents,
+        automationRequired: true,
+      });
+
+      return {
+        ...output,
+        automationExecuted: automationResult.automationExecuted,
+        executionDetails: automationResult.executionDetails,
+      };
     } catch (error: any) {
       if (error.message?.includes('RESOURCE_EXHAUSTED') || error.message?.includes('429')) {
         return {

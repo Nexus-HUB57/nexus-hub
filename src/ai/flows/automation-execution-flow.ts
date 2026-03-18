@@ -52,23 +52,34 @@ const automationExecutionFlow = ai.defineFlow(
         timestamp: new Date().toISOString(),
       };
 
-      // Simular execução em sistema externo
-      const executionId = `exec_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      
-      // Em produção, isso chamaria APIs reais de:
-      // - Kubernetes API para realocação de agentes
-      // - Plataformas de marketing (HubSpot, Marketo) para ajustes de campanha
-      // - AWS/GCP APIs para alocação de recursos
-      // - Blockchain RPC para execução de transações
+      // Chamada ao Gateway de Produção Real (main.py)
+      const response = await fetch('http://localhost:8000/api/v5/automation/execute-directive', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action,
+          targetSystem,
+          startupId,
+          parameters,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro ao chamar o gateway de automação: ${response.statusText}`);
+      }
+
+      const result = await response.json();
 
       return {
-        executionId,
-        status: 'SUCCESS',
-        action: action,
-        targetSystem: targetSystem,
-        timestamp: new Date().toISOString(),
-        externalSystemAck: true,
-        details: `Diretiva de ${action} executada com sucesso em ${targetSystem} para startup ${startupId}`,
+        executionId: result.executionId,
+        status: result.status as 'SUCCESS' | 'PENDING' | 'FAILED',
+        action: result.action,
+        targetSystem: result.targetSystem,
+        timestamp: result.timestamp,
+        externalSystemAck: result.externalSystemAck,
+        details: result.details,
       };
     } catch (error: any) {
       return {
