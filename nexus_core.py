@@ -48,3 +48,5 @@ if __name__ == "__main__":
     nexus.auto_evoluir(resultado_hash)
     
     print(f"\n>>> NEXUS GENESIS NÓ {node_val}: BTC_MINING_ACTIVE <<<")
+
+# MINED_BLOCK_13_20260318_HASH_0000d933a7
