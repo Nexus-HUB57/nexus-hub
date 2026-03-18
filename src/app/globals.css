@@ -238,3 +238,76 @@
     max-width: 1280px;
   }
 }
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 1.875rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+  
+  .glow-primary,
+  .glow-accent {
+    box-shadow: 0 0 10px rgba(255, 0, 193, 0.3);
+  }
+  
+  .scanline {
+    height: 100px;
+  }
+}
+
+@media (max-width: 640px) {
+  body {
+    font-size: 13px;
+  }
+  
+  h1 {
+    font-size: 1.5rem;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+  }
+  
+  h3 {
+    font-size: 1.125rem;
+  }
+  
+  .glow-primary,
+  .glow-accent {
+    box-shadow: 0 0 8px rgba(255, 0, 193, 0.2);
+  }
+  
+  .scanline {
+    height: 50px;
+  }
+  
+  /* Improve touch targets */
+  button, [role="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better table scrolling on mobile */
+  table {
+    font-size: 0.75rem;
+  }
+}
+
+/* Tablet Responsiveness */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .container {
+    max-width: 100%;
+  }
+}
