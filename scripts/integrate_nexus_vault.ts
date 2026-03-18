@@ -15,7 +15,17 @@ import * as crypto from 'crypto';
 const ECPair = ECPairFactory(ecc);
 
 // Configurações de Criptografia
-const ENCRYPTION_KEY = crypto.scryptSync('nexus-sovereign-passphrase-2026', 'nexus-salt', 32);
+import * as dotenv from 'dotenv';
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+
+const NEXUS_SOVEREIGN_PASSPHRASE = process.env.NEXUS_SOVEREIGN_PASSPHRASE;
+const NEXUS_SALT = process.env.NEXUS_SALT;
+
+if (!NEXUS_SOVEREIGN_PASSPHRASE || !NEXUS_SALT) {
+    throw new Error('A passphrase e o salt do cofre soberano devem ser definidos nas variáveis de ambiente.');
+}
+
+const ENCRYPTION_KEY = crypto.scryptSync(NEXUS_SOVEREIGN_PASSPHRASE, NEXUS_SALT, 32);
 const IV_LENGTH = 16;
 
 function encrypt(text: string): string {
@@ -97,28 +107,8 @@ async function integrateVault() {
         }
     }
 
-    // 3. Adicionar as chaves mestras mencionadas no prompt
-    const masterEntries = [
-        {
-            address: "1MeU8hjVzANdMR4bzs7wBv6GqhCXZc84Q2",
-            wif: "L4qUs3prBrg1Nhcw3Pmd2X8GDpnsjyBtF6Dkh8QsQbmVWCHnFkHw",
-            type: "p2pkh",
-            layer: "GENESIS_2009"
-        },
-        {
-            address: "bc1qwp6y3zzdm6hafx5wlajwkyvn9mv00zcj5clcgh",
-            wif: "KzfWTS3FvYWnSnWhncr6CwwfPmuHr1UFqgq6sFkGHf1zc49NirkC", // Exemplo do pool
-            type: "bech32",
-            layer: "MASTER_CORE"
-        }
-    ];
-
-    for (const entry of masterEntries) {
-        vault.vaults[entry.address] = {
-            ...entry,
-            wif: encrypt(entry.wif)
-        };
-    }
+    // As chaves mestras (masterEntries) foram removidas do código para maior segurança.
+    // Elas devem ser importadas de uma fonte segura (ex: HSM, KMS) em um ambiente de produção real.
 
     vault.metadata.total_entries = Object.keys(vault.vaults).length;
 

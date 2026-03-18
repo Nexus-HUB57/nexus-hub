@@ -43,3 +43,8 @@ next-env.d.ts
 # firebase
 firebase-debug.log
 firestore-debug.log
+# Nexus Sovereign Sensitive Files
+sovereign-vault.json
+imports/vault/
+__pycache__/
+*.pyc

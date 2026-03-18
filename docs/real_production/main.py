@@ -14,14 +14,18 @@ from concurrent.futures import ProcessPoolExecutor
 app = FastAPI(title="MATRIX-GNOX: REAL PRODUCTION GATEWAY", version="5.1.0")
 
 # --- CREDENCIAIS SOBERANAS ---
-BINANCE_API_KEY = "P6CZYkGYyjemazXFasi9Q3Qd65sKjLUVahOslN5lell0Fp2JClBP4dhAFqPqvWvq"
-BINANCE_SECRET = "ni3SIBxOnLtYLV9ZNnWHRqfDzMu5wd5A9kqNO5mUCUXSB4LM2UoBWEzsmBLyMtXL"
-SETTLEMENT_ADDRESS = "13m3xop6RnioRX6qrnkavLekv7cvu5DuMK"
+from dotenv import load_dotenv
+
+load_dotenv()
+
+BINANCE_API_KEY = os.getenv("BINANCE_API_KEY")
+BINANCE_SECRET = os.getenv("BINANCE_SECRET")
+SETTLEMENT_ADDRESS = os.getenv("SETTLEMENT_ADDRESS")
 
 # --- CONFIGURAÇÃO ELECTRUM RPC (Soberania Financeira) ---
-ELECTRUM_USER = "nexus_admin"
-ELECTRUM_PASS = "senha_fortissima_nexus"
-ELECTRUM_URL = "http://127.0.0.1:7777"
+ELECTRUM_USER = os.getenv("ELECTRUM_USER")
+ELECTRUM_PASS = os.getenv("ELECTRUM_PASS")
+ELECTRUM_URL = os.getenv("ELECTRUM_URL")
 
 class NexusRPC:
     def __init__(self, user, password, host=ELECTRUM_URL):
