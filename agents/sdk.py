@@ -1,7 +1,7 @@
 import asyncio
 import json
 import websockets
-from typing import List, Callable, Dict, Any
+from typing import List, Callable, Dict, Any, Optional
 
 class NexusAgent:
     def __init__(self, agent_id: str, hub_url: str = "ws://localhost:8000/ws"):
@@ -58,7 +58,7 @@ class NexusAgent:
         except websockets.exceptions.ConnectionClosed:
             print(f"[{self.agent_id}] Connection closed by Hub.")
 
-    async def send(self, action: str, payload: dict, target_id: str = None):
+    async def send(self, action: str, payload: dict, target_id: Optional[str] = None):
         if not self.ws:
             print(f"[{self.agent_id}] Cannot send message, not connected.")
             return
@@ -72,7 +72,7 @@ class NexusAgent:
             
         await self.ws.send(json.dumps(message))
 
-    async def send_message(self, content: str, target_id: str = None):
+    async def send_message(self, content: str, target_id: Optional[str] = None):
         """Send a message specifically. If target_id is None, it broadcasts to all."""
         await self.send("message", {"content": content}, target_id)
 

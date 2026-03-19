@@ -1,6 +1,6 @@
 import json
 import asyncio
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from fastapi import WebSocket
 
 class MessageBroker:
@@ -73,7 +73,7 @@ class MessageBroker:
         if len(self.recent_messages) > self.max_messages:
             self.recent_messages.pop(0)
 
-    async def broadcast(self, message: dict, exclude: str = None):
+    async def broadcast(self, message: dict, exclude: Optional[str] = None):
         for target_id, ws in self.active_agents.items():
             if target_id != exclude:
                 await ws.send_json(message)
